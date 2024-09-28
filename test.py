@@ -1,5 +1,6 @@
 import unittest
 from utilities.driver_factory import DriverFactory
+from pages.home_page import HomePage
 import time
 
 
@@ -9,13 +10,15 @@ class SauceDemoTests(unittest.TestCase):
         self.browser = DriverFactory.get_driver("chrome")
         self.browser.get("https://www.saucedemo.com")
         self.browser.maximize_window()
-        time.sleep(10)
 
     def tearDown(self):
         self.browser.quit()
 
     def test_can_add_product_to_cart(self):
-        pass
+        homepage = HomePage(self.browser)
+        homepage.verify_page(self)
+        homepage.login(username="standard_user", password="secret_sauce")
+        time.sleep(4)
 
 
 if __name__ == "__main__":
