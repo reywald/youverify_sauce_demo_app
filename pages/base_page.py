@@ -32,8 +32,35 @@ class BasePage(ABC):
 
         return web_element
 
+    def get_elements(self, web_locator: tuple) -> list:
+        """
+        Checks if multiple web elements exist on the page's DOM
+
+        Params
+        ------
+        web_locator: a tuple of the form (By.*, "locator")
+
+        Returns
+        -------
+        web_elements: List[WebElement]
+        """
+        web_elements = None
+
+        try:
+            web_elements = WebDriverWait(self.browser, 100).until(
+                EC.presence_of_all_elements_located(web_locator)
+            )
+        except (TimeoutException, NoSuchElementException):
+            print(f"Failed to locate elements {web_locator}")
+
+        return web_elements
+
     @abstractmethod
     def verify_page(self, tester):
         """
         Verifies the web elements of the page
+
+        Params
+        ------
+        tester: unittest.TestCase instance. Provides assertion methods
         """
