@@ -6,14 +6,16 @@ from utilities.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutPage
 
 
 class SauceDemoTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open("data/items.json", "r") as json_file:
-            cls.items_data = json.loads(json_file.read())
+        with open("data/items.json", "r") as data_file, open("data/address.json", "r") as address_file:
+            cls.items_data = json.loads(data_file.read())
+            cls.address_data = json.loads(address_file.read())
 
     def setUp(self):
         self.browser = DriverFactory.get_driver("chrome")
@@ -37,6 +39,10 @@ class SauceDemoTests(unittest.TestCase):
         cart_page.verify_page(self)
         cart_page.check_added_item(self, self.items_data[0])
         cart_page.checkout()
+
+        checkout_page = CheckoutPage(self.browser)
+        checkout_page.verify_page(self)
+        checkout_page.fill_address(self.address_data[0])
 
         time.sleep(4)
 
