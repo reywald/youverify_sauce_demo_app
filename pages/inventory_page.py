@@ -10,9 +10,38 @@ class InventoryPage(BasePage):
         self.PAGE_TITLE = (By.CLASS_NAME, "title")
         self.CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
         self.PRODUCTS = (By.CLASS_NAME, "inventory_item")
+        self.SHOPPING_CART_NUMBER = (By.CLASS_NAME, "shopping_cart_badge")
 
-    def add_item_to_cart(self):
-        pass
+    def add_random_item_to_cart(self):
+        """
+        Add a random item to cart
+        """
+        add_cart_buttons = self.get_elements(
+            (By.CSS_SELECTOR, "button[id*='add-to-cart']"))
+        size = len(add_cart_buttons)
+        from random import randint
+
+        add_cart_buttons[randint(0, size-1)].click()
+
+        cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
+        assert cart_number.text == "1"
+
+    def add_item_to_cart(self, item_name: str):
+        """
+        Search and add an item to cart
+
+        Params
+        ------
+        item_name: str. The item to search for
+        """
+        search_item = item_name.lower().replace(" ", "-")
+
+        add_cart_button = self.get_element(
+            (By.CSS_SELECTOR, f"button[id*='add-to-cart-{search_item}']"))
+        add_cart_button.click()
+
+        cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
+        assert cart_number.text == "1"
 
     def open_cart(self):
         """

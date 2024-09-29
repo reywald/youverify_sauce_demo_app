@@ -2,6 +2,7 @@ import unittest
 from utilities.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
 import time
 
 
@@ -22,7 +23,12 @@ class SauceDemoTests(unittest.TestCase):
 
         inventory_page = InventoryPage(self.browser)
         inventory_page.verify_page(self)
+        inventory_page.add_item_to_cart("Sauce Labs Backpack")
         inventory_page.open_cart()
+
+        cart_page = CartPage(self.browser)
+        cart_page.verify_page(self)
+        
         time.sleep(4)
 
 
