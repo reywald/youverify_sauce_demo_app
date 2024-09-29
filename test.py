@@ -1,12 +1,19 @@
+import json
+import time
 import unittest
+
 from utilities.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
-import time
 
 
 class SauceDemoTests(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        with open("data/items.json", "r") as json_file:
+            cls.items_data = json.loads(json_file.read())
 
     def setUp(self):
         self.browser = DriverFactory.get_driver("chrome")
@@ -23,12 +30,14 @@ class SauceDemoTests(unittest.TestCase):
 
         inventory_page = InventoryPage(self.browser)
         inventory_page.verify_page(self)
-        inventory_page.add_item_to_cart("Sauce Labs Backpack")
+        inventory_page.add_item_to_cart(self.items_data[0]["name"])
         inventory_page.open_cart()
 
         cart_page = CartPage(self.browser)
         cart_page.verify_page(self)
-        
+        cart_page.check_added_item(self, self.items_data[0])
+        cart_page.checkout()
+
         time.sleep(4)
 
 
