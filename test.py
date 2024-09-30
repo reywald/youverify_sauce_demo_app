@@ -8,6 +8,7 @@ from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 from pages.summary_page import SummaryPage
+from pages.complete_page import CompletePage
 
 
 class SauceDemoTests(unittest.TestCase):
@@ -49,6 +50,10 @@ class SauceDemoTests(unittest.TestCase):
         summary_page.verify_page(self)
         summary_page.check_added_item(self, self.items_data[0])
         summary_page.checkout()
+
+        complete_page = CompletePage(self.browser)
+        complete_page.verify_page(self)
+        complete_page.back_home()
 
         time.sleep(4)
 

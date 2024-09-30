@@ -24,11 +24,12 @@ class BasePage(ABC):
         web_element = None
 
         try:
-            web_element = WebDriverWait(self.browser, 100).until(
+            web_element = WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located(web_locator)
             )
-        except (TimeoutException, NoSuchElementException):
-            print(f"Failed to locate element {web_locator}")
+        except TimeoutException as toe:
+            toe.msg = f"Could not find element {web_locator} on time"
+            raise toe
 
         return web_element
 
@@ -50,8 +51,9 @@ class BasePage(ABC):
             web_elements = WebDriverWait(self.browser, 100).until(
                 EC.presence_of_all_elements_located(web_locator)
             )
-        except (TimeoutException, NoSuchElementException):
-            print(f"Failed to locate elements {web_locator}")
+        except TimeoutException as toe:
+            toe.msg = f"Could not find element {web_locator} on time"
+            raise toe
 
         return web_elements
 
