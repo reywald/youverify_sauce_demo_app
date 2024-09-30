@@ -15,9 +15,15 @@ class SauceDemoTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open("data/items.json", "r") as data_file, open("data/address.json", "r") as address_file:
+        """
+        Fetch product items data, billing address data, and login credentials
+        """
+        with (open("data/items.json", "r") as data_file,
+              open("data/address.json", "r") as address_file,
+              open("data/creds.json", "r") as cred_file):
             cls.items_data = json.loads(data_file.read())
             cls.address_data = json.loads(address_file.read())
+            cls.credentials = json.loads(cred_file.read())
 
     def setUp(self):
         self.browser = DriverFactory.get_driver("chrome")
@@ -30,7 +36,8 @@ class SauceDemoTests(unittest.TestCase):
     def test_can_add_product_to_cart(self):
         homepage = HomePage(self.browser)
         homepage.verify_page(self)
-        homepage.login(username="standard_user", password="secret_sauce")
+        homepage.login(
+            username=self.credentials["username"], password=self.credentials["password"])
 
         inventory_page = InventoryPage(self.browser)
         inventory_page.verify_page(self)
@@ -54,6 +61,10 @@ class SauceDemoTests(unittest.TestCase):
         complete_page = CompletePage(self.browser)
         complete_page.verify_page(self)
         complete_page.back_home()
+
+        inventory_page = InventoryPage(self.browser)
+        inventory_page.verify_page(self)
+        inventory_page.cart_is_empty()
 
         time.sleep(4)
 

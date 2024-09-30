@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 from .base_page import BasePage
 
@@ -42,6 +43,16 @@ class InventoryPage(BasePage):
 
         cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
         assert cart_number.text == "1"
+
+    def cart_is_empty(self):
+        """
+        Check that the cart has been emptied after removal or checkout
+        """
+        cart_number = None
+        try:
+            cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
+        except TimeoutException:
+            assert cart_number is None
 
     def open_cart(self):
         """
