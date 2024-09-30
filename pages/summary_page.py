@@ -13,6 +13,8 @@ class SummaryPage(BasePage):
         self.FINISH_BUTTON = (By.ID, "finish")
         self.CANCEL_BUTTON = (By.ID, "cancel")
 
+        self.logger.info(f"{__class__}: In {__class__.__qualname__}")
+
     def check_added_item(self, tester, item_details: dict):
         """
         Verify that an item is visible in the cart page
@@ -36,12 +38,17 @@ class SummaryPage(BasePage):
         tester.assertIn(item_details["price"],
                         subtotal_price.text, "Item price does not match")
 
+        self.logger.info(
+            f"{__class__}: Verified the item description and pricing")
+
     def checkout(self):
         """
         Checkout the item in cart
         """
         finish_button = self.get_element(self.FINISH_BUTTON)
         finish_button.click()
+
+        self.logger.info(f"{__class__}: Completed checkout process")
 
     def verify_page(self, tester):
         tester.assertIn("checkout-step-two.html", self.browser.current_url,
@@ -60,3 +67,5 @@ class SummaryPage(BasePage):
 
         finish_button = self.get_element(self.FINISH_BUTTON)
         tester.assertEqual(finish_button.text, "Finish")
+
+        self.logger.info(f"{__class__}: Verified the presence of web elements")

@@ -14,6 +14,8 @@ class InventoryPage(BasePage):
         self.SHOPPING_CART_NUMBER = (By.CLASS_NAME, "shopping_cart_badge")
         self.SIDEBAR = (By.ID, "react-burger-menu-btn")
 
+        self.logger.info(f"{__class__}: In {__class__.__qualname__}")
+
     def add_random_item_to_cart(self):
         """
         Add a random item to cart
@@ -27,6 +29,8 @@ class InventoryPage(BasePage):
 
         cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
         assert cart_number.text == "1"
+
+        self.logger.info(f"{__class__}: Added randomly selected item to cart")
 
     def add_item_to_cart(self, item_name: str):
         """
@@ -45,6 +49,8 @@ class InventoryPage(BasePage):
         cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
         assert cart_number.text == "1"
 
+        self.logger.info(f"{__class__}: Added item to cart successfully")
+
     def cart_is_empty(self):
         """
         Check that the cart has been emptied after removal or checkout
@@ -53,6 +59,7 @@ class InventoryPage(BasePage):
         try:
             cart_number = self.get_element(self.SHOPPING_CART_NUMBER)
         except TimeoutException:
+            self.logger.info(f"{__class__}: Verified that cart is empty")
             assert cart_number is None
 
     def open_cart(self):
@@ -62,12 +69,16 @@ class InventoryPage(BasePage):
         cart_button = self.get_element(self.CART_LINK)
         cart_button.click()
 
+        self.logger.info(f"{__class__}: Navigated to cart page")
+
     def open_menu(self):
         """
         Clicks the menu icon to access menu items
         """
         sidebar_button = self.get_element(self.SIDEBAR)
         sidebar_button.click()
+
+        self.logger.info(f"{__class__}: Opened sidebar menu")
 
     def verify_page(self, tester):
         tester.assertIn("inventory.html", self.browser.current_url,
@@ -90,3 +101,5 @@ class InventoryPage(BasePage):
 
         sidebar_button = self.get_element(self.SIDEBAR)
         tester.assertIsNotNone(sidebar_button, "Sidebar menu does not exist")
+
+        self.logger.info(f"{__class__}: Verified the presence of web elements")

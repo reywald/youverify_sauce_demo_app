@@ -29,6 +29,7 @@ class BasePage(ABC):
             )
         except TimeoutException as toe:
             toe.msg = f"Could not find element {web_locator} on time"
+            self.logger.error(toe)
             raise toe
 
         return web_element
@@ -53,6 +54,7 @@ class BasePage(ABC):
             )
         except TimeoutException as toe:
             toe.msg = f"Could not find element {web_locator} on time"
+            self.logger.error(toe)
             raise toe
 
         return web_elements
@@ -66,3 +68,14 @@ class BasePage(ABC):
         ------
         tester: unittest.TestCase instance. Provides assertion methods
         """
+
+    @classmethod
+    def set_logger(cls, logger):
+        """
+        Add a logger for every page object to use
+
+        Params
+        ------
+        logger: Logger
+        """
+        cls.logger = logger

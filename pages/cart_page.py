@@ -12,6 +12,8 @@ class CartPage(BasePage):
         self.CONTINUE = (By.ID, "continue-shopping")
         self.CHECKOUT = (By.ID, "checkout")
 
+        self.logger.info(f"{__class__}: In {__class__.__qualname__}")
+
     def check_added_item(self, tester, item_details: dict):
         """
         Verify that an item is visible in the cart page
@@ -31,6 +33,8 @@ class CartPage(BasePage):
         item_price = self.get_element((By.CLASS_NAME, "inventory_item_price"))
         tester.assertEqual(
             item_price.text, item_details["price"], "Item price does not match")
+        
+        self.logger.info(f"{__class__}: Verified the presence of the added item")
 
     def checkout(self):
         """
@@ -38,6 +42,8 @@ class CartPage(BasePage):
         """
         checkout_button = self.get_element(self.CHECKOUT)
         checkout_button.click()
+
+        self.logger.info(f"{__class__}: Checked out the item")
 
     def verify_page(self, tester):
         tester.assertIn("cart.html", self.browser.current_url,
@@ -56,3 +62,5 @@ class CartPage(BasePage):
 
         checkout_button = self.get_element(self.CHECKOUT)
         tester.assertEqual(checkout_button.text, "Checkout")
+
+        self.logger.info(f"{__class__}: Verified the presence of web elements")

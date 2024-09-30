@@ -1,8 +1,12 @@
 import json
+import logging
 import time
 import unittest
 
 from utilities.driver_factory import DriverFactory
+from utilities.logs_handler import LogHandler
+
+from pages.base_page import BasePage
 from pages.home_page import HomePage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -26,13 +30,20 @@ class SauceDemoTests(unittest.TestCase):
             cls.address_data = json.loads(address_file.read())
             cls.credentials = json.loads(cred_file.read())
 
+        cls.logger = LogHandler.create_logger()
+        BasePage.set_logger(cls.logger)
+        cls.logger.info(
+            "Fetched product items, billing addresses and login credentials")
+
     def setUp(self):
         self.browser = DriverFactory.get_driver("chrome")
         self.browser.get("https://www.saucedemo.com")
         self.browser.maximize_window()
+        self.logger.info(f"{__class__}: Opened browser")
 
     def tearDown(self):
         self.browser.quit()
+        self.logger.info(f"{__class__}: Closed browser and session")
 
     def test_can_add_product_to_cart(self):
         homepage = HomePage(self.browser)
@@ -72,7 +83,7 @@ class SauceDemoTests(unittest.TestCase):
         sidebar.verify_page(self)
         sidebar.logout()
 
-        time.sleep(4)
+        # time.sleep(4)
 
 
 if __name__ == "__main__":

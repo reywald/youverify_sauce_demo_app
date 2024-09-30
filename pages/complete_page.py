@@ -12,12 +12,16 @@ class CompletePage(BasePage):
         self.SALUTATION = (By.CLASS_NAME, "complete-header")
         self.BACK = (By.ID, "back-to-products")
 
+        self.logger.info(f"{__class__}: In {__class__.__qualname__}")
+
     def back_home(self):
         """
         Return to products list page
         """
         back_button = self.get_element(self.BACK)
         self.browser.execute_script("arguments[0].click();", back_button)
+
+        self.logger.info(f"{__class__}: Navigated back to products' page")
 
     def verify_page(self, tester):
         tester.assertIn("checkout-complete.html", self.browser.current_url,
@@ -39,3 +43,5 @@ class CompletePage(BasePage):
 
         back_button = self.get_element(self.BACK)
         tester.assertEqual(back_button.text, "Back Home")
+
+        self.logger.info(f"{__class__}: Verified the presence of web elements")

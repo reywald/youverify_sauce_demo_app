@@ -14,6 +14,8 @@ class CheckoutPage(BasePage):
         self.CONTINUE_BUTTON = (By.ID, "continue")
         self.CANCEL_BUTTON = (By.ID, "cancel")
 
+        self.logger.info(f"{__class__}: In {__class__.__qualname__}")
+
     def fill_address(self, address_details):
         """
         Add address details in the form
@@ -29,6 +31,8 @@ class CheckoutPage(BasePage):
 
         continue_button = self.get_element(self.CONTINUE_BUTTON)
         continue_button.click()
+
+        self.logger.info(f"{__class__}: Filled Shipping address form")
 
     def verify_page(self, tester):
         tester.assertIn("checkout-step-one.html", self.browser.current_url,
@@ -59,3 +63,5 @@ class CheckoutPage(BasePage):
 
         continue_button = self.get_element(self.CONTINUE_BUTTON)
         tester.assertEqual(continue_button.get_attribute("value"), "Continue")
+
+        self.logger.info(f"{__class__}: Verified the presence of web elements")
