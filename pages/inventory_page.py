@@ -12,6 +12,7 @@ class InventoryPage(BasePage):
         self.CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
         self.PRODUCTS = (By.CLASS_NAME, "inventory_item")
         self.SHOPPING_CART_NUMBER = (By.CLASS_NAME, "shopping_cart_badge")
+        self.SIDEBAR = (By.ID, "react-burger-menu-btn")
 
     def add_random_item_to_cart(self):
         """
@@ -61,6 +62,13 @@ class InventoryPage(BasePage):
         cart_button = self.get_element(self.CART_LINK)
         cart_button.click()
 
+    def open_menu(self):
+        """
+        Clicks the menu icon to access menu items
+        """
+        sidebar_button = self.get_element(self.SIDEBAR)
+        sidebar_button.click()
+
     def verify_page(self, tester):
         tester.assertIn("inventory.html", self.browser.current_url,
                         "Page URL does not match")
@@ -79,3 +87,6 @@ class InventoryPage(BasePage):
         products = self.get_elements(self.PRODUCTS)
         tester.assertEqual(len(products), 6,
                            "Product Items are not complete")
+
+        sidebar_button = self.get_element(self.SIDEBAR)
+        tester.assertIsNotNone(sidebar_button, "Sidebar menu does not exist")

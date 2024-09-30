@@ -9,6 +9,7 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 from pages.summary_page import SummaryPage
 from pages.complete_page import CompletePage
+from pages.sidebar_fragment import SideBarFragment
 
 
 class SauceDemoTests(unittest.TestCase):
@@ -65,6 +66,11 @@ class SauceDemoTests(unittest.TestCase):
         inventory_page = InventoryPage(self.browser)
         inventory_page.verify_page(self)
         inventory_page.cart_is_empty()
+        inventory_page.open_menu()
+
+        sidebar = SideBarFragment(self.browser)
+        sidebar.verify_page(self)
+        sidebar.logout()
 
         time.sleep(4)
 
